@@ -33,20 +33,22 @@
   </div>
   <script>
     document.getElementById("signinForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      // Example simple check (in real case, connect to backend)
-      if(email === "admin@shop.com" && password === "admin123") {
-        localStorage.setItem("user", JSON.stringify({ role: "admin", email }));
-        window.location.href = "admin-dashboard.html";
-      } else if(email && password) {
-        localStorage.setItem("user", JSON.stringify({ role: "user", email }));
-        window.location.href = "customer-dashboard.html";
-      } else {
-        alert("Invalid credentials");
-      }
-    });
+  e.preventDefault();
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const intendedDestination = localStorage.getItem("intendedDestination") || "customer-dashboard.html";
+
+  if(email === "admin@shop.com" && password === "admin123") {
+    localStorage.setItem("user", JSON.stringify({ role: "admin", email }));
+    window.location.href = "admin-dashboard.html";
+  } else if(email && password) {
+    localStorage.setItem("user", JSON.stringify({ role: "user", email }));
+    window.location.href = intendedDestination;
+  } else {
+    alert("Invalid credentials");
+  }
+});
+
   </script>
 </body>
 </html>
