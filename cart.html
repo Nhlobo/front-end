@@ -102,13 +102,16 @@
       }
     }
 
-    function goToCheckout() {
-      if (cart.length > 0) {
-        window.location.href = "checkout.html";
-      } else {
-        alert("Your cart is empty.");
-      }
-    }
+    function checkout() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (!user) {
+    localStorage.setItem("intendedDestination", "checkout.html");
+    window.location.href = "signin.html";
+  } else {
+    window.location.href = "checkout.html";
+  }
+}
+
   </script>
 </body>
 </html>
