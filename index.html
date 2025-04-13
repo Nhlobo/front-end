@@ -15,3 +15,33 @@
       <a href="signup.html">Sign Up</a>
     </nav>
   </header>
+
+  <main>
+    <h2>Available Products</h2>
+    <div id="product-list" class="grid"></div>
+  </main>
+
+  <script src="js/main.js"></script>
+  <script>
+    // Display products from backend/fake data
+    const products = JSON.parse(localStorage.getItem("products")) || [
+      { id: 1, name: "Smartphone", price: 299, image: "images/product1.jpg" },
+      { id: 2, name: "Laptop", price: 699, image: "images/product2.jpg" },
+      { id: 3, name: "Headphones", price: 99, image: "images/product3.jpg" }
+    ];
+    localStorage.setItem("products", JSON.stringify(products));
+
+    const productList = document.getElementById("product-list");
+    products.forEach(prod => {
+      productList.innerHTML += `
+        <div class="product">
+          <img src="${prod.image}" alt="${prod.name}" />
+          <h3>${prod.name}</h3>
+          <p>R ${prod.price}</p>
+          <button onclick="addToCart(${prod.id})">Add to Cart</button>
+        </div>
+      `;
+    });
+  </script>
+</body>
+</html>
