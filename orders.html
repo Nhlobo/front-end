@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Order Confirmation - ShopNow</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 4em auto;
+      background-color: white;
+      padding: 2em;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    h2 {
+      color: #007bff;
+    }
+
+    .order-summary {
+      margin-top: 1.5em;
+      text-align: left;
+    }
+
+    .order-summary ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .order-summary li {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #eee;
+      padding: 0.5em 0;
+    }
+
+    .total {
+      font-weight: bold;
+      margin-top: 1em;
+      text-align: right;
+    }
+
+    .btn {
+      margin-top: 2em;
+      background-color: #007bff;
+      color: white;
+      padding: 0.6em 1.2em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Thank You for Your Order!</h2>
+    <p>Your order has been placed successfully.</p>
+
+    <div class="order-summary">
+      <h3>Order Summary</h3>
+      <ul id="orderDetails"></ul>
+      <div class="total">Total: R<span id="orderTotal">0.00</span></div>
+    </div>
+
+    <a class="btn" href="products.html">Shop More</a>
+  </div>
+
+  <script>
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const orderDetails = document.getElementById("orderDetails");
+    const orderTotal = document.getElementById("orderTotal");
+
+    let total = 0;
+
+    if (cart.length === 0) {
+      orderDetails.innerHTML = "<li>No items found in order.</li>";
+    } else {
+      cart.forEach(item => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <span>${item.name} (x${item.quantity})</span>
+          <span>R${(item.price * item.quantity).toFixed(2)}</span>
+        `;
+        orderDetails.appendChild(li);
+        total += item.price * item.quantity;
+      });
+      orderTotal.textContent = total.toFixed(2);
+      localStorage.removeItem("cart"); // Clear cart after confirming order
+    }
+  </script>
+</body>
+</html>
