@@ -1,73 +1,21 @@
-<!-- cart.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shopping Cart - ShopNow</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #f4f4f4; }
-    header { background: #28a745; color: white; padding: 1em; text-align: center; }
-    .container { padding: 2em; }
-    .cart-item { background: #fff; margin-bottom: 1em; padding: 1em; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
-    .cart-item h4 { margin: 0 0 10px; }
-    .btn { background-color: #28a745; color: white; padding: 0.5em 1em; border: none; border-radius: 4px; cursor: pointer; }
-    .btn:hover { background-color: #218838; }
-    .total { font-weight: bold; }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cart</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    Shopping Cart
-  </header>
-  <div class="container">
-    <h2>Your Cart</h2>
-    <div id="cartItemsList"></div>
-    <div class="total">
-      <p>Total: R<span id="totalAmount">0.00</span></p>
-    </div>
-    <button class="btn" onclick="checkout()">Proceed to Checkout</button>
-  </div>
+  <h2>Your Cart</h2>
+  <div id="cartItems"></div>
+  <a href="index.html" class="btn">Continue Shopping</a>
+  <a href="signin.html" class="btn">Proceed to Checkout</a>
 
   <script>
-    function checkout() {
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (!user) {
-        alert("You must be signed in to proceed with checkout.");
-        window.location.href = "signin.html";
-      } else {
-        window.location.href = "checkout.html";
-      }
-    }
-
-    const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
-    const cartItemsList = document.getElementById("cartItemsList");
-    let total = 0;
-
-    if (cartItems.length === 0) {
-      cartItemsList.innerHTML = "<p>Your cart is empty.</p>";
-    } else {
-      cartItems.forEach((item, index) => {
-        const div = document.createElement("div");
-        div.className = "cart-item";
-        div.innerHTML = `
-          <h4>${item.name}</h4>
-          <p><strong>Price:</strong> R${item.price}</p>
-          <p><strong>Quantity:</strong> ${item.quantity}</p>
-          <button class="btn" onclick="removeItem(${index})">Remove</button>
-        `;
-        cartItemsList.appendChild(div);
-        total += item.price * item.quantity;
-      });
-      document.getElementById("totalAmount").innerText = total.toFixed(2);
-    }
-
-    function removeItem(index) {
-      const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
-      cartItems.splice(index, 1);
-      localStorage.setItem("cart", JSON.stringify(cartItems));
-      window.location.reload();
-    }
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartDiv = document.getElementById('cartItems');
+    cartDiv.innerHTML = cartItems.map(item => `<p>${item.name} - ${item.quantity}</p>`).join('');
   </script>
 </body>
 </html>
