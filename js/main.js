@@ -1,4 +1,4 @@
-fetch('https://your-backend-url.onrender.com/products.php')
+fetch('https://back-end-1-9yi1.onrender.com/products.php')
   .then(res => res.json())
   .then(products => {
     const container = document.getElementById('product-list');
