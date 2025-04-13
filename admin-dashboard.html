@@ -1,0 +1,77 @@
+<!-- admin-dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - ShopNow</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f4f4f4; }
+    header { background: #28a745; color: white; padding: 1em; text-align: center; }
+    .container { padding: 2em; }
+    .product, .order { background: #fff; margin-bottom: 1em; padding: 1em; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+    .product h4, .order h4 { margin: 0 0 10px; }
+    .logout { float: right; color: white; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <header>
+    Welcome, Admin!
+    <span class="logout" onclick="logout()">Logout</span>
+  </header>
+  <div class="container">
+    <h2>Manage Products</h2>
+    <div id="productsList"></div>
+    <h2>Manage Orders</h2>
+    <div id="ordersList"></div>
+  </div>
+
+  <script>
+    function logout() {
+      localStorage.removeItem("user");
+      window.location.href = "signin.html";
+    }
+
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || user.role !== "admin") {
+      window.location.href = "signin.html";
+    }
+
+    const products = JSON.parse(localStorage.getItem("products")) || [];
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+    const productsList = document.getElementById("productsList");
+    if (products.length === 0) {
+      productsList.innerHTML = "<p>No products available.</p>";
+    } else {
+      products.forEach(product => {
+        const div = document.createElement("div");
+        div.className = "product";
+        div.innerHTML = `
+          <h4>${product.name}</h4>
+          <p><strong>Price:</strong> R${product.price}</p>
+          <p><strong>Description:</strong> ${product.description}</p>
+        `;
+        productsList.appendChild(div);
+      });
+    }
+
+    const ordersList = document.getElementById("ordersList");
+    if (orders.length === 0) {
+      ordersList.innerHTML = "<p>No orders yet.</p>";
+    } else {
+      orders.forEach((order, index) => {
+        const div = document.createElement("div");
+        div.className = "order";
+        div.innerHTML = `
+          <h4>Order #${index + 1}</h4>
+          <p><strong>Items:</strong> ${order.items.join(", ")}</p>
+          <p><strong>Total:</strong> R${order.total.toFixed(2)}</p>
+          <p><strong>Status:</strong> ${order.status}</p>
+        `;
+        ordersList.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>
