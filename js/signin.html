@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="form-container">
+    <h2>Sign In</h2>
+    <form id="signinForm">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+
+      <button type="submit">Sign In</button>
+    </form>
+    <p><a href="reset-password.html">Forgot password?</a></p>
+    <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+  </div>
+
+  <script src="main.js"></script>
+  <script>
+    document.getElementById("signinForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      // Placeholder for actual login logic
+      if (email === "admin@example.com" && password === "admin123") {
+        localStorage.setItem("role", "admin");
+        window.location.href = "admin-dashboard.html";
+      } else if (email === "user@example.com" && password === "user123") {
+        localStorage.setItem("role", "user");
+        window.location.href = "customer-dashboard.html";
+      } else {
+        alert("Invalid credentials.");
+      }
+    });
+  </script>
+</body>
+</html>
