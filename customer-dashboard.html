@@ -1,4 +1,3 @@
-<!-- customer-dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +18,6 @@
     Welcome, <span id="userName">Customer</span>!
     <span class="logout" onclick="logout()">Logout</span>
     <button type="button" class="btn" onclick="window.location.href='index.html'">Continue Shopping</button>
-
   </header>
   <div class="container">
     <h2>Your Orders</h2>
@@ -28,8 +26,11 @@
 
   <script>
     function logout() {
-      localStorage.removeItem("user");
-      window.location.href = "signin.html";
+      fetch('../backend/logout.php', { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+          window.location.href = "signin.html";
+        });
     }
 
     const user = JSON.parse(localStorage.getItem("user"));
@@ -39,25 +40,26 @@
       document.getElementById("userName").textContent = user.name;
     }
 
-    const orders = JSON.parse(localStorage.getItem("orders")) || [];
-    const userOrders = orders.filter(o => o.userEmail === user.email);
-
-    const ordersList = document.getElementById("ordersList");
-    if (userOrders.length === 0) {
-      ordersList.innerHTML = "<p>No orders yet.</p>";
-    } else {
-      userOrders.forEach((order, index) => {
-        const div = document.createElement("div");
-        div.className = "order";
-        div.innerHTML = `
-          <h4>Order #${index + 1}</h4>
-          <p><strong>Items:</strong> ${order.items.join(", ")}</p>
-          <p><strong>Total:</strong> R${order.total.toFixed(2)}</p>
-          <p><strong>Status:</strong> ${order.status}</p>
-        `;
-        ordersList.appendChild(div);
+    fetch(`../backend/get_user_orders.php?user_id=${user.id}`)
+      .then(response => response.json())
+      .then(orders => {
+        const ordersList = document.getElementById("ordersList");
+        if (orders.length === 0) {
+          ordersList.innerHTML = "<p>No orders yet.</p>";
+        } else {
+          orders.forEach((order, index) => {
+            const div = document.createElement("div");
+            div.className = "order";
+            div.innerHTML = `
+              <h4>Order #${index + 1}</h4>
+              <p><strong>Items:</strong> ${order.items.join(", ")}</p>
+              <p><strong>Total:</strong> R${order.total.toFixed(2)}</p>
+              <p><strong>Status:</strong> ${order.status}</p>
+            `;
+            ordersList.appendChild(div);
+          });
+        }
       });
-    }
   </script>
 </body>
 </html>
