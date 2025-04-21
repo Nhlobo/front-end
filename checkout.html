@@ -111,15 +111,25 @@
         status: "Pending"
       };
 
-      const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
-      existingOrders.push(order);
-      localStorage.setItem("orders", JSON.stringify(existingOrders));
-      localStorage.removeItem("cart");
-
-      document.getElementById("orderSuccess").style.display = "block";
-      setTimeout(() => {
-        window.location.href = "orders.html";
-      }, 2000);
+      fetch('../backend/save_order.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ customer: { fullname: name, email, address }, cart })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          document.getElementById("orderSuccess").style.display = "block";
+          localStorage.removeItem("cart");
+          setTimeout(() => {
+            window.location.href = "orders.html";
+          }, 2000);
+        } else {
+          alert(data.message);
+        }
+      });
     });
   </script>
 </body>
