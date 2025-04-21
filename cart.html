@@ -102,16 +102,15 @@
       }
     }
 
-    function checkout() {
-  const user = JSON.parse(localStorage.getItem("user"));
-  if (!user) {
-    localStorage.setItem("intendedDestination", "checkout.html");
-    window.location.href = "signin.html";
-  } else {
-    window.location.href = "checkout.html";
-  }
-}
-
+    function goToCheckout() {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user) {
+        localStorage.setItem("intendedDestination", "checkout.html");
+        window.location.href = "signin.html";
+      } else {
+        window.location.href = "checkout.html";
+      }
+    }
   </script>
 </body>
 </html>
